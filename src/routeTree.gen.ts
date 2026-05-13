@@ -9,61 +9,153 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SiteRouteImport } from './routes/_site'
+import { Route as SiteIndexRouteImport } from './routes/_site.index'
+import { Route as SiteServiciiRouteImport } from './routes/_site.servicii'
+import { Route as SitePortofoliuRouteImport } from './routes/_site.portofoliu'
+import { Route as SiteContactRouteImport } from './routes/_site.contact'
 
-const IndexRoute = IndexRouteImport.update({
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SiteRoute = SiteRouteImport.update({
+  id: '/_site',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SiteIndexRoute = SiteIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteServiciiRoute = SiteServiciiRouteImport.update({
+  id: '/servicii',
+  path: '/servicii',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePortofoliuRoute = SitePortofoliuRouteImport.update({
+  id: '/portofoliu',
+  path: '/portofoliu',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteContactRoute = SiteContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => SiteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof SiteIndexRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/contact': typeof SiteContactRoute
+  '/portofoliu': typeof SitePortofoliuRoute
+  '/servicii': typeof SiteServiciiRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/contact': typeof SiteContactRoute
+  '/portofoliu': typeof SitePortofoliuRoute
+  '/servicii': typeof SiteServiciiRoute
+  '/': typeof SiteIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_site': typeof SiteRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_site/contact': typeof SiteContactRoute
+  '/_site/portofoliu': typeof SitePortofoliuRoute
+  '/_site/servicii': typeof SiteServiciiRoute
+  '/_site/': typeof SiteIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/sitemap.xml' | '/contact' | '/portofoliu' | '/servicii'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/sitemap.xml' | '/contact' | '/portofoliu' | '/servicii' | '/'
+  id:
+    | '__root__'
+    | '/_site'
+    | '/sitemap.xml'
+    | '/_site/contact'
+    | '/_site/portofoliu'
+    | '/_site/servicii'
+    | '/_site/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  SiteRoute: typeof SiteRouteWithChildren
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_site': {
+      id: '/_site'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof SiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_site/': {
+      id: '/_site/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof SiteIndexRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/servicii': {
+      id: '/_site/servicii'
+      path: '/servicii'
+      fullPath: '/servicii'
+      preLoaderRoute: typeof SiteServiciiRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/portofoliu': {
+      id: '/_site/portofoliu'
+      path: '/portofoliu'
+      fullPath: '/portofoliu'
+      preLoaderRoute: typeof SitePortofoliuRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/contact': {
+      id: '/_site/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof SiteContactRouteImport
+      parentRoute: typeof SiteRoute
     }
   }
 }
 
+interface SiteRouteChildren {
+  SiteContactRoute: typeof SiteContactRoute
+  SitePortofoliuRoute: typeof SitePortofoliuRoute
+  SiteServiciiRoute: typeof SiteServiciiRoute
+  SiteIndexRoute: typeof SiteIndexRoute
+}
+
+const SiteRouteChildren: SiteRouteChildren = {
+  SiteContactRoute: SiteContactRoute,
+  SitePortofoliuRoute: SitePortofoliuRoute,
+  SiteServiciiRoute: SiteServiciiRoute,
+  SiteIndexRoute: SiteIndexRoute,
+}
+
+const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  SiteRoute: SiteRouteWithChildren,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
