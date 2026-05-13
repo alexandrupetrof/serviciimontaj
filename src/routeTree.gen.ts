@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SiteRouteImport } from './routes/_site'
 import { Route as SiteIndexRouteImport } from './routes/_site.index'
+import { Route as SiteServiciiRouteImport } from './routes/_site.servicii'
+import { Route as SitePortofoliuRouteImport } from './routes/_site.portofoliu'
+import { Route as SiteContactRouteImport } from './routes/_site.contact'
 
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
@@ -21,24 +24,54 @@ const SiteIndexRoute = SiteIndexRouteImport.update({
   path: '/',
   getParentRoute: () => SiteRoute,
 } as any)
+const SiteServiciiRoute = SiteServiciiRouteImport.update({
+  id: '/servicii',
+  path: '/servicii',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePortofoliuRoute = SitePortofoliuRouteImport.update({
+  id: '/portofoliu',
+  path: '/portofoliu',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteContactRoute = SiteContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => SiteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
+  '/contact': typeof SiteContactRoute
+  '/portofoliu': typeof SitePortofoliuRoute
+  '/servicii': typeof SiteServiciiRoute
 }
 export interface FileRoutesByTo {
+  '/contact': typeof SiteContactRoute
+  '/portofoliu': typeof SitePortofoliuRoute
+  '/servicii': typeof SiteServiciiRoute
   '/': typeof SiteIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_site': typeof SiteRouteWithChildren
+  '/_site/contact': typeof SiteContactRoute
+  '/_site/portofoliu': typeof SitePortofoliuRoute
+  '/_site/servicii': typeof SiteServiciiRoute
   '/_site/': typeof SiteIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/contact' | '/portofoliu' | '/servicii'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/_site' | '/_site/'
+  to: '/contact' | '/portofoliu' | '/servicii' | '/'
+  id:
+    | '__root__'
+    | '/_site'
+    | '/_site/contact'
+    | '/_site/portofoliu'
+    | '/_site/servicii'
+    | '/_site/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -61,14 +94,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteIndexRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/servicii': {
+      id: '/_site/servicii'
+      path: '/servicii'
+      fullPath: '/servicii'
+      preLoaderRoute: typeof SiteServiciiRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/portofoliu': {
+      id: '/_site/portofoliu'
+      path: '/portofoliu'
+      fullPath: '/portofoliu'
+      preLoaderRoute: typeof SitePortofoliuRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/contact': {
+      id: '/_site/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof SiteContactRouteImport
+      parentRoute: typeof SiteRoute
+    }
   }
 }
 
 interface SiteRouteChildren {
+  SiteContactRoute: typeof SiteContactRoute
+  SitePortofoliuRoute: typeof SitePortofoliuRoute
+  SiteServiciiRoute: typeof SiteServiciiRoute
   SiteIndexRoute: typeof SiteIndexRoute
 }
 
 const SiteRouteChildren: SiteRouteChildren = {
+  SiteContactRoute: SiteContactRoute,
+  SitePortofoliuRoute: SitePortofoliuRoute,
+  SiteServiciiRoute: SiteServiciiRoute,
   SiteIndexRoute: SiteIndexRoute,
 }
 
