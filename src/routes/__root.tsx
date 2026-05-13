@@ -75,10 +75,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "ClimaPro — Montaj AC, electrice și sanitare" },
       { name: "description", content: "Servicii premium de montaj aer condiționat, instalații electrice și sanitare. Echipă autorizată, garanție extinsă, intervenții rapide." },
       { name: "author", content: "ClimaPro" },
-      { property: "og:title", content: "ClimaPro — Servicii tehnice premium" },
-      { property: "og:description", content: "Montaj AC, electrice și sanitare cu garanție." },
+      { property: "og:title", content: "ClimaPro — Montaj AC, electrice și sanitare" },
+      { property: "og:description", content: "Servicii premium de montaj aer condiționat, instalații electrice și sanitare. Echipă autorizată, garanție extinsă, intervenții rapide." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "ClimaPro — Montaj AC, electrice și sanitare" },
+      { name: "twitter:description", content: "Servicii premium de montaj aer condiționat, instalații electrice și sanitare. Echipă autorizată, garanție extinsă, intervenții rapide." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/f0dd2501-3838-446e-b8a4-e21a6b14317f" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/f0dd2501-3838-446e-b8a4-e21a6b14317f" },
     ],
     links: [
       {
